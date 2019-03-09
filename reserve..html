@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Reserve - Hot Restaurant</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="jumbotron">
+                        <h1 class="bold text-center">Sweaty Kitchen</h1>
+                        <hr class="my-4">
+                        <h3 class="text-center">Make your reservation</h3>
+                        <p class="lead text-center">
+                            <a class="btn btn-primary btn-lg" href="/tables" role="button">View Tables</a>
+                            <a class="btn btn-light btn-lg" href="/" role="button">Home</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Table Reservation</h2>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group">
+            
+                                    <form method="POST" id="addRes">
+            
+                                    <label for="nameInput">Name</label>
+                                    <input type="text" class="form-control" id="nameInput" aria-describedby="trainName" placeholder="">
+                                
+                                    <label for="phoneInput">Phone Number</label>
+                                    <input type="text" class="form-control" id="phoneInput" aria-describedby="destination" placeholder="">
+                                
+                                    <label for="emailInput">Email</label>
+                                    <input type="text" class="form-control" id="emailInput" aria-describedby="firstTrain" placeholder="">
+                                
+                                    <label for="uniqueInput">Unique ID</label>
+                                    <input type="text" class="form-control" id="uniqueInput" aria-describedby="frequency" placeholder="">
+                                
+                                    <button type="submit" class="btn btn-primary" id="addResBtn">Submit</button>
+            
+                                    </form>
+            
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        <a href="">API Table Link</a> | <a href="">API Wait List</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        
+            $("#addResBtn").on("click", function(event) { 
+                event.preventDefault(); // prevent form from trying to submit/refresh the page    
+                console.log("button clicked");
+                var resObject = {
+                    name: $("#nameInput").val().trim(),
+                    phone: $("#phoneInput").val().trim(),
+                    email: $("#emailInput").val().trim(),
+                    unique: $("#uniqueInput").val().trim()
+                };
+                console.log("resObject:");
+                console.log(resObject);
+                $.post("/api/newRes", resObject)
+                    .then(function(data) {
+                    console.log("posted. ", data);
+                    if (data.stat === true) {
+                        alert("Yay! You're officially booked!");
+                    } else {
+                        alert("Sorry, you've been placed on the waitlist");
+                    }
+                });
+            });
+        
+        </script>
+
+    </body>
+
+</html>

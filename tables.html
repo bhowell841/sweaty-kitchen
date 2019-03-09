@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Tables - Hot Restaurant</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="jumbotron">
+                        <h1 class="bold text-center">Sweaty Kitchen</h1>
+                        <hr class="my-4">
+                        <h3 class="text-center">Current Reservations and Waiting List</h3>
+                        <p class="lead text-center">
+                            <a class="btn btn-danger btn-lg" href="/reserve" role="button">Make Reservations</a>
+                            <a class="btn btn-light btn-lg" href="/" role="button">Home</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Current Reservations</h2>
+                        </div>
+                        <div class="card-body" id="bookedTables">
+                            <div class="card">
+                                <h3>Table #1</h3>
+                                <hr class="my-4">
+                                <h3>ID: </h3>
+                                <h3>Name: </h3>
+                                <h3>Table: </h3>
+                                <h3>Phone: </h3>
+                            </div>
+                            <div class="card">
+                                <h3>Table #1</h3>
+                                <hr class="my-4">
+                                <h3>ID: </h3>
+                                <h3>Name: </h3>
+                                <h3>Table: </h3>
+                                <h3>Phone: </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Waiting List</h2>
+                            </div>
+                            <div class="card-body" id="waitTables">
+                                <div class="card">
+                                    <h3>Table #1</h3>
+                                    <hr class="my-4">
+                                    <h3>ID: </h3>
+                                    <h3>Name: </h3>
+                                    <h3>Table: </h3>
+                                    <h3>Phone: </h3>
+                                </div>
+                                <div class="card">
+                                    <h3>Table #1</h3>
+                                    <hr class="my-4">
+                                    <h3>ID: </h3>
+                                    <h3>Name: </h3>
+                                    <h3>Table: </h3>
+                                    <h3>Phone: </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        <a href="">Clear Tables</a> | <a href="">API Table Link</a> | <a href="">API Wait List</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <script>
+            $.get("/api", function(response) {
+                console.log(response);
+                // looping through the object
+                for (let i in response.tables) {
+                    if (response.tables[i] === '') {
+                        // table is empty
+                        $("#bookedTable").append("<h1>No tables reserved.</h1>");
+                    } else {
+                        // draw table
+                        var newTable = $("<div>");
+                        newTable.addClass("card");
+                        newTable.append("<h3>Name: " + reseponse.tables[i].name + "</h3>");
+                        newTable.append("<h3>Name: " + reseponse.tables[i].name + "</h3>");
+                        newTable.append("<h3>Name: " + reseponse.tables[i].name + "</h3>");
+                        newTable.append("<h3>Name: " + reseponse.tables[i].name + "</h3>");
+                        $("#bookedTables").append(newTable);
+                    }
+                }
+                for (let i in response.wait) {
+                    // draw response.wait[i]
+                    var newTable = $("<div>");
+                    newTable.addClass("card");
+                    newTable.append("<h3>Name: " + reseponse.wait[i].name + "</h3>");
+                    newTable.append("<h3>Name: " + reseponse.wait[i].name + "</h3>");
+                    newTable.append("<h3>Name: " + reseponse.wait[i].name + "</h3>");
+                    newTable.append("<h3>Name: " + reseponse.wait[i].name + "</h3>");
+                    $("#waitTables").append(newTable);
+                }             
+            });
+        </script>
+    </body>
+
+</html>
