@@ -6,7 +6,7 @@
 //  modules & variables
 const express = require('express')
 const path = require('path')
-const PORT = 8080
+const PORT = 12532
 const app = express()
 //  settings
 app.use(express.urlencoded({extended:true}))
