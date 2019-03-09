@@ -1,64 +1,58 @@
-const express = require('express');
+
+//  External modules & global variables/settings
+//  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+
+
+//  modules & variables
+const express = require('express')
 const path = require('path')
-
-const app = express();
-const PORT = 3000;
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-
-var tables= [{
-    id: 1,
-    name: "Dave",
-    email: "hankatola@me.com",
-    phone: "123-456-3213"
-},
-{
-    id: 2,
-    name: "Maggie",
-    email: "betty_crocker@me.com",
-    phone: "919-453-9867"
-}]
-
-var waitList = [{
-    id: 6,
-    name: "Blaine",
-    email: "bdiddy428",
-    phone: "914-432-8976"
-}]
+const PORT = 8080
+const app = express()
+//  settings
+app.use(express.urlencoded({extended:true}))
+app.use(express.json())
+//  variables
+const R = {
+    tables: {1:'',2:'',3:'',4:'',5:''},
+    wait: [],
+    accepted: 0
+}
 
 
-// send to the page
-app.get("/", function(req, res){
-    res.sendFile(path.join(__dirname, "index.html"));
+//  Server stuff
+//  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+
+//  listening
+app.get('/:route',(req,res)=>{
+    const route = req.params.route
+    // send appropriate webpage back
+    if (route.startsWith('api')) {
+        // they want the reservation object
+        res.json(R)
+    } else {
+        // sends back the appropriate html file
+        res.sendFile(path.join(__dirname, route + '.html'))
+    }
 })
 
-app.get("/reserve", function(req, res) {
-    res.sendFile(path.join(__dirname, "reserve.html"));
-});
+//  posting
+app.post('/',(req,res)=>{
+    // data should be a reservation object
+    const data = req.body
+    console.log('Received ' + data)
+    let status = {stat:false}
+    for (let i in R.tables) {
+        if (R.tables[i] === '' && status.stat === false) {
+            R.tables[i] = data
+            status.stat = true
+        }
+    }
+    if (status.stat === false) {
+        R.wait.push(data)
+    }
+    // send complete json back
+    res.json(status)
+})
 
-app.get("/tables", function(req, res) {
-    res.sendFile(path.join(__dirname, "tables.html"));
-});
-
-
-
-// get the tables
-app.get("/tables", function(req, res){
-    return res.send(tables)
-});
-
-// and the waitlist
-app.get("/waitList", function(req, res){
-    return res.send(waitList)
-});
-
-// add to the lists
-// some stuff
-// goes  here
-
-// Make the server listen
-app.listen(PORT, function(){
-    console.log("App is listening on port " + PORT);
-});
+//  listen last
+app.listen(PORT,()=>{console.log('Server listening on port ' + PORT)})
